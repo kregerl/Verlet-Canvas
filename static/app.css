@@ -1,0 +1,11 @@
+* {
+    --high-emphasis: 88%;
+}
+
+html {
+    font-family: sans-serif;
+}
+
+body {
+    margin: 0px 0px 0px 0px;
+}

@@ -7,6 +7,10 @@ export class GridCell {
         this.objects = [];
     }
 
+    clear() {
+        this.objects = [];
+    }
+
     addBall(index: number) {
         this.objects.push(index);
     }
@@ -32,8 +36,8 @@ export class Grid {
         this.grid = new Array();
         this.cellSize = cellSize;
 
-        let width = Math.floor(canvasWidth / cellSize) + 1;
-        let height = Math.floor(canvasHeight / cellSize);
+        let width = Math.ceil(canvasWidth / cellSize);
+        let height = Math.ceil(canvasHeight / cellSize);
 
         this.width = width;
         this.height = height;
@@ -51,9 +55,20 @@ export class Grid {
         }
     }
 
+    clear() {
+        for (let row of this.grid) {
+            for (let col of row) {
+                col.clear();
+            }
+        }
+    }
+
     addBall(ball: Ball) {
-        let gridX = Math.max(Math.floor(ball.currentPosition.x / this.cellSize) - 1, 0);
-        let gridY = Math.max(Math.floor(ball.currentPosition.y / this.cellSize) - 1, 0);
+        let gridX = Math.floor(ball.currentPosition.x / this.cellSize)
+        let gridY = Math.floor(ball.currentPosition.y / this.cellSize)
+
+        // let gridX = Math.ceil(ball.currentPosition.x / this.cellSize)
+        // let gridY = Math.ceil(ball.currentPosition.y / this.cellSize)
         let ballIndex = this.balls.indexOf(ball);
 
         if (!this.grid[gridY][gridX]) {
@@ -63,8 +78,11 @@ export class Grid {
     }
 
     removeBall(ball: Ball) {
-        let gridX = Math.max(Math.floor(ball.currentPosition.x / this.cellSize) - 1, 0);
-        let gridY = Math.max(Math.floor(ball.currentPosition.y / this.cellSize) - 1, 0);
+        let gridX = Math.floor(ball.currentPosition.x / this.cellSize)
+        let gridY = Math.floor(ball.currentPosition.y / this.cellSize)
+
+        // let gridX = Math.ceil(ball.currentPosition.x / this.cellSize)
+        // let gridY = Math.ceil(ball.currentPosition.y / this.cellSize)
         let ballIndex = this.balls.indexOf(ball);
 
         if (!this.grid[gridY][gridX]) {

@@ -46,10 +46,14 @@ export class Ball {
     radius: number;
     
     constructor(pos: Vec2, radius: number) {
+        console.log("constructor", pos);
         this.currentPosition = pos;
         this.previousPosition = pos;
         this.acceleration = Vec2.ZERO;
         this.radius = radius;
+
+        console.log("this.currentPosition", this.currentPosition);
+        console.log("this.previousPosition", this.previousPosition);
     }
 
     accelerate(acceleration: Vec2) {

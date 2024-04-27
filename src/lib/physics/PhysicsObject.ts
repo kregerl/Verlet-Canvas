@@ -44,13 +44,16 @@ export class Ball {
     previousPosition: Vec2;
     acceleration: Vec2;
     radius: number;
+
+    color: string;
     
-    constructor(pos: Vec2, radius: number) {
+    constructor(pos: Vec2, radius: number, color: string = "green") {
         // console.log("constructor", pos);
         this.currentPosition = pos;
-        this.previousPosition = pos;
+        this.previousPosition = Object.assign({}, pos);
         this.acceleration = Vec2.ZERO;
         this.radius = radius;
+        this.color = color;
 
         // console.log("this.currentPosition", this.currentPosition);
         // console.log("this.previousPosition", this.previousPosition);
@@ -61,36 +64,30 @@ export class Ball {
     }
 
     applyConstraints(width: number, height: number) {
-        if (this.currentPosition.y + this.radius >= height) {
+        if (this.currentPosition.y + this.radius >= height ) {
             this.currentPosition.y = height - this.radius;
-        }
-
-        if (this.currentPosition.y - this.radius <= 0) {
+        }else if (this.currentPosition.y - this.radius <= 0) {
             this.currentPosition.y = this.radius;
         }
 
-        if (this.currentPosition.x + this.radius >= width) {
+        if (this.currentPosition.x + this.radius >= width ) {
             this.currentPosition.x = width - this.radius;
-        }
-
-        if (this.currentPosition.x - this.radius <= 0) {
+        }else if (this.currentPosition.x - this.radius <= 0) {
             this.currentPosition.x = this.radius;
         }
     }
 
     update(dt: number) {
-        // console.log("dt", dt);
-        let time = dt / 1000;
         let velocity = this.currentPosition.sub(this.previousPosition);
         this.previousPosition = this.currentPosition;
-        this.currentPosition = this.currentPosition.add(velocity).add(this.acceleration.mul_n(time * time))
+        this.currentPosition = this.currentPosition.add(velocity).add(this.acceleration.mul_n(dt * dt))
         this.acceleration = Vec2.ZERO;
     }
 
     render(ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
         ctx.arc(this.currentPosition.x, this.currentPosition.y, this.radius, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "green";
+        ctx.fillStyle = this.color;
         ctx.fill();
         ctx.closePath();
     }

@@ -25,7 +25,7 @@ export class GridCell {
 
 export class Grid {
     balls: Array<Ball>;
-    grid: Array<Array<GridCell>>;
+    data: Array<Array<GridCell>>;
     cellSize: number;
 
     width: number;
@@ -33,11 +33,11 @@ export class Grid {
 
     constructor(canvasWidth: number, canvasHeight: number, cellSize: number, balls: Array<Ball>) {
         this.balls = balls;
-        this.grid = new Array();
+        this.data = new Array();
         this.cellSize = cellSize;
 
-        let width = Math.ceil(canvasWidth / cellSize);
-        let height = Math.ceil(canvasHeight / cellSize);
+        let width = Math.ceil(canvasWidth / cellSize) + 2;
+        let height = Math.ceil(canvasHeight / cellSize) + 2;
 
         this.width = width;
         this.height = height;
@@ -47,7 +47,7 @@ export class Grid {
             for (let x = 0; x < width; x++) {
                 row.push(new GridCell());
             }
-            this.grid.push(row);
+            this.data.push(row);
         }
 
         for (let ball of balls) {
@@ -56,7 +56,7 @@ export class Grid {
     }
 
     clear() {
-        for (let row of this.grid) {
+        for (let row of this.data) {
             for (let col of row) {
                 col.clear();
             }
@@ -64,32 +64,28 @@ export class Grid {
     }
 
     addBall(ball: Ball) {
-        let gridX = Math.floor(ball.currentPosition.x / this.cellSize)
-        let gridY = Math.floor(ball.currentPosition.y / this.cellSize)
+        let gridX = Math.floor(ball.currentPosition.x / this.cellSize) + 1
+        let gridY = Math.floor(ball.currentPosition.y / this.cellSize) + 1
 
-        // let gridX = Math.ceil(ball.currentPosition.x / this.cellSize)
-        // let gridY = Math.ceil(ball.currentPosition.y / this.cellSize)
         let ballIndex = this.balls.indexOf(ball);
 
-        if (!this.grid[gridY][gridX]) {
+        if (!this.data[gridY][gridX]) {
             console.log("Here", gridY, gridX, ball); 
         }
-        this.grid[gridY][gridX].addBall(ballIndex);
+        this.data[gridY][gridX].addBall(ballIndex);
     }
 
     removeBall(ball: Ball) {
-        let gridX = Math.floor(ball.currentPosition.x / this.cellSize)
-        let gridY = Math.floor(ball.currentPosition.y / this.cellSize)
+        let gridX = Math.floor(ball.currentPosition.x / this.cellSize) + 1
+        let gridY = Math.floor(ball.currentPosition.y / this.cellSize) + 1
 
-        // let gridX = Math.ceil(ball.currentPosition.x / this.cellSize)
-        // let gridY = Math.ceil(ball.currentPosition.y / this.cellSize)
         let ballIndex = this.balls.indexOf(ball);
 
-        if (!this.grid[gridY][gridX]) {
+        if (!this.data[gridY][gridX]) {
             console.log("Here", gridY, gridX, ball); 
         }
 
-        this.grid[gridY][gridX].removeBall(ballIndex);
+        this.data[gridY][gridX].removeBall(ballIndex);
     }
 
     pushBall(ball: Ball) {
@@ -98,6 +94,14 @@ export class Grid {
     }
 
     get(x: number, y: number): GridCell {
-        return this.grid[y][x];
+        return this.data[y][x];
+    }
+
+    lengthY(): number {
+        return this.data.length;
+    }
+
+    lengthX(row: number): number {
+        return this.data[row].length;
     }
 }
